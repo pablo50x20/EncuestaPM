@@ -17,6 +17,8 @@
     --card-bg: #fffdf9;
     --error-bg: #fdf0ec;
     --error: #9b2c0a;
+    --info-bg: #eef4fb;
+    --info: #1a4a7a;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { background: var(--cream); }
@@ -30,12 +32,7 @@
       radial-gradient(ellipse at 80% 90%, rgba(139,69,19,0.04) 0%, transparent 50%);
   }
   .wrapper { max-width: 620px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-  .header {
-    text-align: center;
-    padding: 2rem 0 2.5rem;
-    border-bottom: 1px solid var(--line);
-    margin-bottom: 2rem;
-  }
+  .header { text-align: center; padding: 2rem 0 2.5rem; border-bottom: 1px solid var(--line); margin-bottom: 2rem; }
   .header-label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 0.75rem; }
   .header h1 { font-family: 'Playfair Display', serif; font-size: clamp(26px, 6vw, 36px); font-weight: 600; line-height: 1.2; color: var(--ink); margin-bottom: 0.5rem; }
   .header-sub { font-size: 14px; color: var(--muted); font-weight: 300; }
@@ -45,23 +42,28 @@
   .screen-sub { font-size: 13px; color: var(--muted); margin-bottom: 1.75rem; line-height: 1.6; }
   .card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; }
   label.field-label { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 500; display: block; margin-bottom: 0.5rem; }
-  input[type=text] { width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--line); border-radius: 8px; font-size: 16px; font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); transition: border-color 0.2s; -webkit-appearance: none; }
-  input[type=text]:focus { outline: none; border-color: var(--accent-light); }
+  input[type=text], input[type=password] { width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--line); border-radius: 8px; font-size: 16px; font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); transition: border-color 0.2s; -webkit-appearance: none; }
+  input[type=text]:focus, input[type=password]:focus { outline: none; border-color: var(--accent-light); }
   .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
   .btn { display: inline-flex; align-items: center; gap: 6px; padding: 0.55rem 1.2rem; border: 1px solid var(--line); border-radius: 8px; background: transparent; color: var(--ink); font-size: 14px; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 0.15s, border-color 0.15s; font-weight: 400; }
   .btn:hover { background: rgba(26,22,16,0.05); border-color: rgba(26,22,16,0.3); }
   .btn:active { transform: scale(0.98); }
   .btn-primary { background: var(--ink); color: var(--cream); border-color: var(--ink); font-weight: 500; }
   .btn-primary:hover { background: #2e2820; }
-  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-danger { background: transparent; color: var(--error); border-color: rgba(155,44,10,0.3); font-size: 13px; padding: 0.4rem 0.9rem; }
+  .btn-danger:hover { background: var(--error-bg); border-color: rgba(155,44,10,0.5); }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; pointer-events: none; }
   .song-row { display: flex; align-items: center; gap: 10px; padding: 0.7rem 0; border-bottom: 1px solid var(--line); }
   .song-row:last-child { border-bottom: none; }
   .song-num { font-size: 11px; color: var(--muted); min-width: 18px; font-weight: 400; }
   input[type=checkbox] { width: 17px; height: 17px; flex-shrink: 0; cursor: pointer; accent-color: var(--accent); border-radius: 2px; }
+  input[type=checkbox]:disabled { cursor: not-allowed; opacity: 0.4; }
   .song-name { flex: 1; font-size: 14px; line-height: 1.4; cursor: pointer; }
   select.pref-select { width: 56px; font-size: 13px; padding: 3px 4px; border: 1px solid var(--line); border-radius: 6px; background: var(--cream); color: var(--ink); font-family: 'DM Sans', sans-serif; opacity: 0.35; pointer-events: none; cursor: default; transition: opacity 0.2s; -webkit-appearance: auto; }
   select.pref-select.active { opacity: 1; pointer-events: auto; cursor: pointer; }
+  select.pref-select:disabled { opacity: 0.25; pointer-events: none; }
   .error-msg { background: var(--error-bg); color: var(--error); border: 1px solid rgba(155,44,10,0.2); border-radius: 8px; padding: 0.65rem 1rem; margin: 0.85rem 0 0; font-size: 13px; line-height: 1.5; }
+  .info-msg { background: var(--info-bg); color: var(--info); border: 1px solid rgba(26,74,122,0.2); border-radius: 8px; padding: 0.65rem 1rem; margin-bottom: 1rem; font-size: 13px; line-height: 1.5; }
   .result-row { display: flex; align-items: flex-start; gap: 12px; padding: 0.75rem 0; border-bottom: 1px solid var(--line); }
   .result-row:last-child { border-bottom: none; }
   .rank-medal { font-family: 'Playfair Display', serif; font-size: 20px; min-width: 26px; color: var(--accent); font-weight: 600; line-height: 1.3; }
@@ -76,6 +78,19 @@
   .back-btn:hover { color: var(--ink); }
   .divider { height: 1px; background: var(--line); margin: 1.5rem 0; }
   .loading { text-align: center; padding: 2rem; color: var(--muted); font-size: 14px; }
+  .admin-divider { display: flex; align-items: center; gap: 10px; margin: 1.5rem 0 1rem; }
+  .admin-divider span { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .admin-divider::before, .admin-divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+  .user-row { display: flex; align-items: center; gap: 10px; padding: 0.7rem 0; border-bottom: 1px solid var(--line); }
+  .user-row:last-child { border-bottom: none; }
+  .user-name { flex: 1; font-size: 14px; font-weight: 500; }
+  .user-meta { font-size: 12px; color: var(--muted); }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(26,22,16,0.45); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1rem; }
+  .modal-overlay.hidden { display: none; }
+  .modal { background: var(--card-bg); border: 1px solid var(--line); border-radius: 14px; padding: 1.5rem; max-width: 360px; width: 100%; }
+  .modal h3 { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; margin-bottom: 0.5rem; }
+  .modal p { font-size: 13px; color: var(--muted); margin-bottom: 1.25rem; line-height: 1.6; }
+  .modal .btn-row { justify-content: flex-end; }
 </style>
 </head>
 <body>
@@ -100,6 +115,10 @@
       <button class="btn" onclick="goResultsFromHome()">Ver resultados</button>
     </div>
     <div id="s1-error"></div>
+    <div class="admin-divider"><span>Administración</span></div>
+    <div class="btn-row">
+      <button class="btn btn-danger" onclick="openPasswordModal()">Eliminar usuario</button>
+    </div>
   </div>
 
   <!-- PANTALLA 2 -->
@@ -107,6 +126,7 @@
     <button class="back-btn" onclick="showScreen('s1')">← Volver al inicio</button>
     <p class="screen-title">Elige tus 3 favoritas</p>
     <p class="screen-sub">Marca exactamente 3 canciones y asigna a cada una un número de preferencia distinto: 1 (favorita), 2 o 3 (menos favorita de las 3).</p>
+    <div id="already-voted-msg"></div>
     <div class="card" id="song-list"></div>
     <div id="s2-error"></div>
     <div class="divider"></div>
@@ -129,7 +149,46 @@
     </div>
   </div>
 
+  <!-- PANTALLA 4 -->
+  <div id="s4" class="screen">
+    <button class="back-btn" onclick="showScreen('s1')">← Volver al inicio</button>
+    <p class="screen-title">Administrar usuarios</p>
+    <p class="screen-sub">Selecciona un usuario para eliminar todos sus votos.</p>
+    <div id="s4-msg"></div>
+    <div class="card" id="user-list"></div>
+  </div>
+
 </div>
+
+<!-- Modal contraseña -->
+<div class="modal-overlay hidden" id="pwd-modal">
+  <div class="modal">
+    <h3>Acceso de administrador</h3>
+    <p>Ingresa la contraseña para gestionar usuarios.</p>
+    <label class="field-label" for="pwd-input">Contraseña</label>
+    <input type="password" id="pwd-input" placeholder="••••••"
+      onkeydown="if(event.key==='Enter') checkPassword()" style="margin-bottom:0.75rem" />
+    <div id="pwd-error"></div>
+    <div class="divider"></div>
+    <div class="btn-row">
+      <button class="btn" onclick="closePasswordModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="checkPassword()">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal confirmar eliminación -->
+<div class="modal-overlay hidden" id="confirm-modal">
+  <div class="modal">
+    <h3>Eliminar usuario</h3>
+    <p id="confirm-msg"></p>
+    <div class="btn-row">
+      <button class="btn" onclick="closeConfirmModal()">Cancelar</button>
+      <button class="btn btn-danger" onclick="confirmDelete()">Eliminar</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const SONGS = [
   "As You Lie There","Lost Horizon","Days We Left Behind","Ripples In A Pond",
@@ -140,11 +199,12 @@ const BIN_ID = "6a1deb92da38895dfe785009";
 const API_KEY = "$2a$10$8gLlmLhLFwCaIxIMD3JqZeNUZAZAf/Rt8FUlgM2Jq7J1tj/5dOs1y";
 const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 const HEADERS = { "Content-Type": "application/json", "X-Master-Key": API_KEY };
+const ADMIN_PASSWORD = "TBODL";
 
 let currentUser = "";
 let checks = {};
 let prefs = {};
-let songListBuilt = false;
+let userToDelete = "";
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -157,46 +217,66 @@ function setError(divId, msg) {
   el.innerHTML = msg ? `<div class="error-msg">${msg}</div>` : '';
 }
 
-function requireName(errorDivId) {
+function requireName() {
   const val = document.getElementById('username-input').value.trim();
-  if (!val) {
-    showScreen('s1');
-    setError(errorDivId || 's1-error', 'Por favor ingresa un nombre de usuario.');
-    return null;
-  }
+  if (!val) { setError('s1-error', 'Por favor ingresa un nombre de usuario.'); return null; }
+  setError('s1-error', '');
   return val;
 }
 
-function goVote() {
-  const val = requireName('s1-error');
+async function loadVotes() {
+  const res = await fetch(BIN_URL + "/latest", { headers: { "X-Master-Key": API_KEY } });
+  const data = await res.json();
+  return data.record.votes || [];
+}
+
+async function saveVotes(votes) {
+  await fetch(BIN_URL, { method: "PUT", headers: HEADERS, body: JSON.stringify({ votes }) });
+}
+
+function userHasVoted(votes, username) {
+  return votes.some(v => v.user.trim().toLowerCase() === username.trim().toLowerCase());
+}
+
+async function goVote() {
+  const val = requireName();
   if (!val) return;
-  setError('s1-error', '');
   currentUser = val;
-  buildSongList();
+  let votes = [];
+  try { votes = await loadVotes(); } catch(e) {}
+  const alreadyVoted = userHasVoted(votes, currentUser);
+  buildSongList(alreadyVoted);
+  const msgEl = document.getElementById('already-voted-msg');
+  const submitBtn = document.getElementById('submit-btn');
+  if (alreadyVoted) {
+    msgEl.innerHTML = `<div class="info-msg"><strong>${currentUser}</strong> ya votó. Puedes ver las canciones, pero no enviar otro voto. Para votar de nuevo, vuelve al inicio y cambia el nombre de usuario.</div>`;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Ya votaste';
+  } else {
+    msgEl.innerHTML = '';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Enviar votos';
+  }
   showScreen('s2');
 }
 
-function goResultsFromHome() {
-  const val = requireName('s1-error');
+async function goResultsFromHome() {
+  const val = requireName();
   if (!val) return;
-  setError('s1-error', '');
   currentUser = val;
-  // No viene de pantalla 2, ocultamos "volver a encuesta"
   document.getElementById('back-to-survey-btn').style.display = 'none';
   loadAndRenderResults();
   showScreen('s3');
 }
 
 function goResultsFromSurvey() {
-  // Viene de pantalla 2, mostramos "volver a encuesta"
   document.getElementById('back-to-survey-btn').style.display = 'inline-flex';
   loadAndRenderResults();
   showScreen('s3');
 }
 
-function buildSongList() {
+function buildSongList(disabled) {
   checks = {}; prefs = {};
-  songListBuilt = true;
   const container = document.getElementById('song-list');
   container.innerHTML = '';
   SONGS.forEach((song, i) => {
@@ -204,9 +284,9 @@ function buildSongList() {
     row.className = 'song-row';
     row.innerHTML = `
       <span class="song-num">${i + 1}</span>
-      <input type="checkbox" id="ck${i}" onchange="toggleSong(${i})">
+      <input type="checkbox" id="ck${i}" ${disabled ? 'disabled' : ''} onchange="toggleSong(${i})">
       <label for="ck${i}" class="song-name">${song}</label>
-      <select class="pref-select" id="pref${i}" onchange="setPref(${i}, this.value)">
+      <select class="pref-select" id="pref${i}" ${disabled ? 'disabled' : ''} onchange="setPref(${i}, this.value)">
         <option value="">—</option>
         <option value="1">1</option>
         <option value="2">2</option>
@@ -229,40 +309,17 @@ function setPref(i, val) {
   else delete prefs[i];
 }
 
-async function loadVotes() {
-  const res = await fetch(BIN_URL + "/latest", { headers: { "X-Master-Key": API_KEY } });
-  const data = await res.json();
-  return data.record.votes || [];
-}
-
-async function saveVotes(votes) {
-  await fetch(BIN_URL, {
-    method: "PUT",
-    headers: HEADERS,
-    body: JSON.stringify({ votes })
-  });
-}
-
 async function submitVote() {
   setError('s2-error', '');
   const selected = Object.keys(checks).filter(k => checks[k]).map(Number);
-
-  if (selected.length !== 3) {
-    setError('s2-error', 'Debes seleccionar exactamente 3 canciones.'); return;
-  }
+  if (selected.length !== 3) { setError('s2-error', 'Debes seleccionar exactamente 3 canciones.'); return; }
   const missingPref = selected.filter(i => !prefs[i]);
-  if (missingPref.length > 0) {
-    setError('s2-error', 'Asigna un número de preferencia (1, 2 o 3) a cada canción seleccionada.'); return;
-  }
+  if (missingPref.length > 0) { setError('s2-error', 'Asigna un número de preferencia (1, 2 o 3) a cada canción seleccionada.'); return; }
   const prefVals = selected.map(i => prefs[i]);
-  if (new Set(prefVals).size !== 3) {
-    setError('s2-error', 'Cada preferencia (1, 2 y 3) debe usarse exactamente una vez — no puedes repetir el mismo número.'); return;
-  }
-
+  if (new Set(prefVals).size !== 3) { setError('s2-error', 'Cada preferencia (1, 2 y 3) debe usarse exactamente una vez — no puedes repetir el mismo número.'); return; }
   const btn = document.getElementById('submit-btn');
   btn.disabled = true;
   btn.textContent = 'Enviando…';
-
   try {
     const vote = { user: currentUser, choices: selected.map(i => ({ song: SONGS[i], pref: prefs[i] })) };
     const votes = await loadVotes();
@@ -273,7 +330,6 @@ async function submitVote() {
     showScreen('s3');
   } catch(e) {
     setError('s2-error', 'Error al guardar el voto. Intenta de nuevo.');
-  } finally {
     btn.disabled = false;
     btn.textContent = 'Enviar votos';
   }
@@ -284,33 +340,23 @@ async function loadAndRenderResults() {
   const totalEl = document.getElementById('s3-total');
   container.innerHTML = '<div class="loading">Cargando resultados…</div>';
   totalEl.textContent = '';
-
   let votes;
   try { votes = await loadVotes(); }
   catch(e) { container.innerHTML = '<div class="error-msg">Error al cargar los resultados. Intenta de nuevo.</div>'; return; }
-
-  if (!votes.length) {
-    container.innerHTML = '<div class="no-votes">Aún no hay votos registrados.</div>'; return;
-  }
-
+  if (!votes.length) { container.innerHTML = '<div class="no-votes">Aún no hay votos registrados.</div>'; return; }
   totalEl.textContent = `${votes.length} voto${votes.length > 1 ? 's' : ''} registrado${votes.length > 1 ? 's' : ''}`;
-
   const scores = {};
   const voterMap = {};
   SONGS.forEach(s => { scores[s] = 0; voterMap[s] = []; });
   const pts = { 1: 3, 2: 2, 3: 1 };
-
   votes.forEach(v => {
     v.choices.forEach(c => {
       scores[c.song] = (scores[c.song] || 0) + pts[c.pref];
       voterMap[c.song].push({ user: v.user, pref: c.pref });
     });
   });
-
   const ranked = SONGS.filter(s => scores[s] > 0).sort((a, b) => scores[b] - scores[a]);
-
   if (!ranked.length) { container.innerHTML = '<div class="no-votes">Aún no hay votos registrados.</div>'; return; }
-
   let html = '<div class="card">';
   ranked.forEach((song, idx) => {
     const voterStr = voterMap[song].map(v => `${v.user} (${v.pref})`).join(' · ');
@@ -325,6 +371,81 @@ async function loadAndRenderResults() {
   });
   html += '</div>';
   container.innerHTML = html;
+}
+
+/* ---- Admin ---- */
+function openPasswordModal() {
+  document.getElementById('pwd-input').value = '';
+  document.getElementById('pwd-error').innerHTML = '';
+  document.getElementById('pwd-modal').classList.remove('hidden');
+  setTimeout(() => document.getElementById('pwd-input').focus(), 50);
+}
+
+function closePasswordModal() {
+  document.getElementById('pwd-modal').classList.add('hidden');
+}
+
+function checkPassword() {
+  const val = document.getElementById('pwd-input').value;
+  if (val === ADMIN_PASSWORD) {
+    closePasswordModal();
+    loadAndRenderUsers();
+    showScreen('s4');
+  } else {
+    document.getElementById('pwd-error').innerHTML = '<div class="error-msg" style="margin-top:0.5rem">Contraseña incorrecta.</div>';
+  }
+}
+
+async function loadAndRenderUsers() {
+  const container = document.getElementById('user-list');
+  const msgEl = document.getElementById('s4-msg');
+  container.innerHTML = '<div class="loading">Cargando usuarios…</div>';
+  msgEl.innerHTML = '';
+  let votes;
+  try { votes = await loadVotes(); }
+  catch(e) { container.innerHTML = '<div class="error-msg">Error al cargar los datos.</div>'; return; }
+
+  const users = [...new Set(votes.map(v => v.user))];
+  if (!users.length) { container.innerHTML = '<div class="no-votes">No hay usuarios registrados.</div>'; return; }
+
+  let html = '';
+  users.forEach(user => {
+    const count = votes.filter(v => v.user === user).length;
+    html += `<div class="user-row">
+      <div>
+        <div class="user-name">${user}</div>
+        <div class="user-meta">${count} voto${count > 1 ? 's' : ''}</div>
+      </div>
+      <button class="btn btn-danger" onclick="openConfirmModal('${user.replace(/'/g, "\\'")}')">Eliminar</button>
+    </div>`;
+  });
+  container.innerHTML = `<div class="card">${html}</div>`;
+}
+
+function openConfirmModal(username) {
+  userToDelete = username;
+  document.getElementById('confirm-msg').textContent = `¿Eliminar todos los votos de "${username}"? Esta acción no se puede deshacer.`;
+  document.getElementById('confirm-modal').classList.remove('hidden');
+}
+
+function closeConfirmModal() {
+  document.getElementById('confirm-modal').classList.add('hidden');
+  userToDelete = '';
+}
+
+async function confirmDelete() {
+  closeConfirmModal();
+  const msgEl = document.getElementById('s4-msg');
+  msgEl.innerHTML = '<div class="loading">Eliminando…</div>';
+  try {
+    const votes = await loadVotes();
+    const filtered = votes.filter(v => v.user !== userToDelete);
+    await saveVotes(filtered);
+    msgEl.innerHTML = `<div class="info-msg">Los votos de "<strong>${userToDelete}</strong>" fueron eliminados.</div>`;
+    loadAndRenderUsers();
+  } catch(e) {
+    msgEl.innerHTML = '<div class="error-msg">Error al eliminar. Intenta de nuevo.</div>';
+  }
 }
 </script>
 </body>
