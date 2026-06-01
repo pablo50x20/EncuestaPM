@@ -92,11 +92,12 @@
     <p class="screen-sub">Ingresa tu nombre y vota por tus 3 canciones favoritas del disco, o consulta los resultados actuales.</p>
     <div class="card">
       <label class="field-label" for="username-input">Tu nombre de usuario</label>
-      <input type="text" id="username-input" placeholder="Escribe tu nombre…" maxlength="40" />
+      <input type="text" id="username-input" placeholder="Escribe tu nombre…" maxlength="40"
+        onkeydown="if(event.key==='Enter') goVote()" />
     </div>
     <div class="btn-row">
       <button class="btn btn-primary" onclick="goVote()">Votar</button>
-      <button class="btn" onclick="goResults()">Ver resultados</button>
+      <button class="btn" onclick="goResultsFromHome()">Ver resultados</button>
     </div>
     <div id="s1-error"></div>
   </div>
@@ -111,7 +112,7 @@
     <div class="divider"></div>
     <div class="btn-row">
       <button class="btn btn-primary" id="submit-btn" onclick="submitVote()">Enviar votos</button>
-      <button class="btn" onclick="goResults()">Ver resultados</button>
+      <button class="btn" onclick="goResultsFromSurvey()">Ver resultados</button>
     </div>
   </div>
 
@@ -124,7 +125,7 @@
     <div class="divider"></div>
     <div class="btn-row">
       <button class="btn" onclick="loadAndRenderResults()">↻ Actualizar</button>
-      <button class="btn" onclick="showScreen('s2')">← Volver a la encuesta</button>
+      <button class="btn" id="back-to-survey-btn" onclick="showScreen('s2')" style="display:none">← Volver a la encuesta</button>
     </div>
   </div>
 
@@ -143,6 +144,7 @@ const HEADERS = { "Content-Type": "application/json", "X-Master-Key": API_KEY };
 let currentUser = "";
 let checks = {};
 let prefs = {};
+let songListBuilt = false;
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -155,17 +157,46 @@ function setError(divId, msg) {
   el.innerHTML = msg ? `<div class="error-msg">${msg}</div>` : '';
 }
 
-function goVote() {
+function requireName(errorDivId) {
   const val = document.getElementById('username-input').value.trim();
-  if (!val) { setError('s1-error', 'Por favor ingresa un nombre de usuario.'); return; }
+  if (!val) {
+    showScreen('s1');
+    setError(errorDivId || 's1-error', 'Por favor ingresa un nombre de usuario.');
+    return null;
+  }
+  return val;
+}
+
+function goVote() {
+  const val = requireName('s1-error');
+  if (!val) return;
   setError('s1-error', '');
   currentUser = val;
   buildSongList();
   showScreen('s2');
 }
 
+function goResultsFromHome() {
+  const val = requireName('s1-error');
+  if (!val) return;
+  setError('s1-error', '');
+  currentUser = val;
+  // No viene de pantalla 2, ocultamos "volver a encuesta"
+  document.getElementById('back-to-survey-btn').style.display = 'none';
+  loadAndRenderResults();
+  showScreen('s3');
+}
+
+function goResultsFromSurvey() {
+  // Viene de pantalla 2, mostramos "volver a encuesta"
+  document.getElementById('back-to-survey-btn').style.display = 'inline-flex';
+  loadAndRenderResults();
+  showScreen('s3');
+}
+
 function buildSongList() {
   checks = {}; prefs = {};
+  songListBuilt = true;
   const container = document.getElementById('song-list');
   container.innerHTML = '';
   SONGS.forEach((song, i) => {
@@ -237,18 +268,15 @@ async function submitVote() {
     const votes = await loadVotes();
     votes.push(vote);
     await saveVotes(votes);
-    goResults();
+    document.getElementById('back-to-survey-btn').style.display = 'inline-flex';
+    loadAndRenderResults();
+    showScreen('s3');
   } catch(e) {
     setError('s2-error', 'Error al guardar el voto. Intenta de nuevo.');
   } finally {
     btn.disabled = false;
     btn.textContent = 'Enviar votos';
   }
-}
-
-function goResults() {
-  loadAndRenderResults();
-  showScreen('s3');
 }
 
 async function loadAndRenderResults() {
